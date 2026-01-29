@@ -1,1 +1,249 @@
+--========================================================
+-- Saik Hub | Mobile | Brookhaven Only
+-- Version: 0.1 BETA
+-- Owner & Developer: P4ul4D3ntru0
+--========================================================
 
+--========================
+-- PROTEÇÃO BROOKHAVEN
+--========================
+local BROOKHAVEN_PLACEID = 4924922222
+if game.PlaceId ~= BROOKHAVEN_PLACEID then
+	warn("[Saik Hub] Este script funciona apenas no Brookhaven.")
+	return
+end
+
+--========================
+-- SERVIÇOS
+--========================
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local lp = Players.LocalPlayer
+
+--========================
+-- REGISTRO INVISÍVEL
+--========================
+getgenv().SAIK_HUB_USER = true
+
+--========================
+-- GUI BASE
+--========================
+local gui = Instance.new("ScreenGui")
+gui.Name = "SaikHubGUI"
+gui.ResetOnSpawn = false
+gui.Parent = lp:WaitForChild("PlayerGui")
+
+--========================
+-- MAIN FRAME
+--========================
+local main = Instance.new("Frame")
+main.Size = UDim2.fromScale(0.75, 0.6)
+main.Position = UDim2.fromScale(0.5, 0.5)
+main.AnchorPoint = Vector2.new(0.5, 0.5)
+main.BackgroundColor3 = Color3.fromRGB(10,10,10)
+main.Parent = gui
+main.Active = true
+main.Draggable = true
+
+local corner = Instance.new("UICorner", main)
+corner.CornerRadius = UDim.new(0, 16)
+
+--========================
+-- TOP BAR
+--========================
+local top = Instance.new("Frame", main)
+top.Size = UDim2.new(1,0,0,40)
+top.BackgroundColor3 = Color3.fromRGB(15,15,15)
+
+local topCorner = Instance.new("UICorner", top)
+topCorner.CornerRadius = UDim.new(0,16)
+
+local title = Instance.new("TextLabel", top)
+title.Size = UDim2.new(1,-90,1,0)
+title.Position = UDim2.new(0,10,0,0)
+title.BackgroundTransparency = 1
+title.Text = "Saik Hub"
+title.TextColor3 = Color3.fromRGB(255,255,255)
+title.Font = Enum.Font.GothamBold
+title.TextSize = 18
+title.TextXAlignment = Left
+
+local hideBtn = Instance.new("TextButton", top)
+hideBtn.Size = UDim2.new(0,30,0,30)
+hideBtn.Position = UDim2.new(1,-70,0.5,-15)
+hideBtn.Text = "-"
+hideBtn.Font = Enum.Font.GothamBold
+hideBtn.TextSize = 20
+hideBtn.BackgroundColor3 = Color3.fromRGB(25,25,25)
+hideBtn.TextColor3 = Color3.new(1,1,1)
+Instance.new("UICorner", hideBtn).CornerRadius = UDim.new(1,0)
+
+local closeBtn = Instance.new("TextButton", top)
+closeBtn.Size = UDim2.new(0,30,0,30)
+closeBtn.Position = UDim2.new(1,-35,0.5,-15)
+closeBtn.Text = "X"
+closeBtn.Font = Enum.Font.GothamBold
+closeBtn.TextSize = 16
+closeBtn.BackgroundColor3 = Color3.fromRGB(120,30,30)
+closeBtn.TextColor3 = Color3.new(1,1,1)
+Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(1,0)
+
+--========================
+-- SIDEBAR
+--========================
+local sidebar = Instance.new("Frame", main)
+sidebar.Position = UDim2.new(0,0,0,40)
+sidebar.Size = UDim2.new(0,130,1,-40)
+sidebar.BackgroundColor3 = Color3.fromRGB(12,12,12)
+
+--========================
+-- CONTENT
+--========================
+local content = Instance.new("Frame", main)
+content.Position = UDim2.new(0,130,0,40)
+content.Size = UDim2.new(1,-130,1,-40)
+content.BackgroundTransparency = 1
+
+--========================
+-- ABAS
+--========================
+local tabs = {
+	"Creditos","OP","Principal","Áudio","Casa",
+	"Avatar","Ferramentas","Veículos","Diversão"
+}
+
+local pages = {}
+
+local function createPage(name)
+	local page = Instance.new("Frame", content)
+	page.Size = UDim2.new(1,0,1,0)
+	page.Visible = false
+	page.BackgroundTransparency = 1
+	pages[name] = page
+	return page
+end
+
+for _,t in ipairs(tabs) do
+	createPage(t)
+end
+
+--========================
+-- BOTÕES SIDEBAR
+--========================
+local y = 10
+for _,t in ipairs(tabs) do
+	local b = Instance.new("TextButton", sidebar)
+	b.Size = UDim2.new(1,-10,0,30)
+	b.Position = UDim2.new(0,5,0,y)
+	b.Text = t
+	b.Font = Enum.Font.Gotham
+	b.TextSize = 13
+	b.TextColor3 = Color3.new(1,1,1)
+	b.BackgroundColor3 = Color3.fromRGB(20,20,20)
+	Instance.new("UICorner", b).CornerRadius = UDim.new(0,8)
+
+	b.MouseButton1Click:Connect(function()
+		for _,p in pairs(pages) do p.Visible = false end
+		pages[t].Visible = true
+	end)
+
+	y += 35
+end
+
+--========================
+-- CONTEÚDO CRÉDITOS
+--========================
+local c = pages["Creditos"]
+c.Visible = true
+
+local function label(txt,ypos)
+	local l = Instance.new("TextLabel", c)
+	l.Size = UDim2.new(1,-20,0,30)
+	l.Position = UDim2.new(0,10,0,ypos)
+	l.BackgroundTransparency = 1
+	l.Text = txt
+	l.TextColor3 = Color3.new(1,1,1)
+	l.Font = Enum.Font.Gotham
+	l.TextSize = 14
+	return l
+end
+
+local discordBtn = Instance.new("TextButton", c)
+discordBtn.Size = UDim2.new(0,220,0,40)
+discordBtn.Position = UDim2.new(0.5,-110,0,20)
+discordBtn.Text = "Entrar no Discord"
+discordBtn.Font = Enum.Font.GothamBold
+discordBtn.TextSize = 14
+discordBtn.BackgroundColor3 = Color3.fromRGB(60,60,60)
+discordBtn.TextColor3 = Color3.new(1,1,1)
+Instance.new("UICorner", discordBtn).CornerRadius = UDim.new(0,10)
+
+discordBtn.MouseButton1Click:Connect(function()
+	if setclipboard then
+		setclipboard("https://discord.gg/xE3xxzAcH3")
+	end
+end)
+
+label("Owner e Developer",80)
+label("P4ul4D3ntru0",110)
+label("Content Creators",150)
+label("nenhum!",180)
+label("Versão",220)
+label("0.1 BETA",250)
+
+--========================
+-- PLACEHOLDER OUTRAS ABAS
+--========================
+for name,page in pairs(pages) do
+	if name ~= "Creditos" then
+		local t = Instance.new("TextLabel", page)
+		t.Size = UDim2.new(1,0,1,0)
+		t.BackgroundTransparency = 1
+		t.Text = "Nada por aqui.. espere a próxima atualização do hub"
+		t.TextColor3 = Color3.fromRGB(200,200,200)
+		t.Font = Enum.Font.Gotham
+		t.TextSize = 16
+	end
+end
+
+--========================
+-- QUADRADO OCULTO RGB
+--========================
+local mini = Instance.new("Frame", gui)
+mini.Size = UDim2.fromOffset(50,50)
+mini.Position = UDim2.fromScale(0.5,0.5)
+mini.AnchorPoint = Vector2.new(0.5,0.5)
+mini.BackgroundColor3 = Color3.fromRGB(0,0,0)
+mini.Visible = false
+mini.Active = true
+mini.Draggable = true
+Instance.new("UICorner", mini).CornerRadius = UDim.new(0,12)
+
+local stroke = Instance.new("UIStroke", mini)
+stroke.Thickness = 2
+
+task.spawn(function()
+	local h = 0
+	while true do
+		h = (h + 1) % 360
+		stroke.Color = Color3.fromHSV(h/360,1,1)
+		task.wait(0.03)
+	end
+end)
+
+hideBtn.MouseButton1Click:Connect(function()
+	main.Visible = false
+	mini.Visible = true
+end)
+
+mini.InputBegan:Connect(function(i)
+	if i.UserInputType == Enum.UserInputType.Touch then
+		main.Visible = true
+		mini.Visible = false
+	end
+end)
+
+closeBtn.MouseButton1Click:Connect(function()
+	gui:Destroy()
+end)
