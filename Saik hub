@@ -5,7 +5,7 @@
 --========================================================
 
 --========================
--- PROTEÇÃO BROOKHAVEN
+-- CHECAGEM BROOKHAVEN
 --========================
 local BROOKHAVEN_PLACEID = 4924922222
 if game.PlaceId ~= BROOKHAVEN_PLACEID then
@@ -18,11 +18,11 @@ end
 --========================
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
-local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
 local lp = Players.LocalPlayer
 
 --========================
--- REGISTRO INVISÍVEL
+-- REGISTRO GLOBAL
 --========================
 getgenv().SAIK_HUB_USER = true
 
@@ -38,16 +38,14 @@ gui.Parent = lp:WaitForChild("PlayerGui")
 -- MAIN FRAME
 --========================
 local main = Instance.new("Frame")
-main.Size = UDim2.fromScale(0.75, 0.6)
-main.Position = UDim2.fromScale(0.5, 0.5)
-main.AnchorPoint = Vector2.new(0.5, 0.5)
+main.Size = UDim2.fromScale(0.75,0.6)
+main.Position = UDim2.fromScale(0.5,0.5)
+main.AnchorPoint = Vector2.new(0.5,0.5)
 main.BackgroundColor3 = Color3.fromRGB(10,10,10)
 main.Parent = gui
-main.Active = true
-main.Draggable = true
 
-local corner = Instance.new("UICorner", main)
-corner.CornerRadius = UDim.new(0, 16)
+local mainCorner = Instance.new("UICorner", main)
+mainCorner.CornerRadius = UDim.new(0,16)
 
 --========================
 -- TOP BAR
@@ -64,10 +62,10 @@ title.Size = UDim2.new(1,-90,1,0)
 title.Position = UDim2.new(0,10,0,0)
 title.BackgroundTransparency = 1
 title.Text = "Saik Hub"
-title.TextColor3 = Color3.fromRGB(255,255,255)
+title.TextColor3 = Color3.new(1,1,1)
 title.Font = Enum.Font.GothamBold
 title.TextSize = 18
-title.TextXAlignment = Left
+title.TextXAlignment = Enum.TextXAlignment.Left
 
 local hideBtn = Instance.new("TextButton", top)
 hideBtn.Size = UDim2.new(0,30,0,30)
@@ -98,7 +96,7 @@ sidebar.Size = UDim2.new(0,130,1,-40)
 sidebar.BackgroundColor3 = Color3.fromRGB(12,12,12)
 
 --========================
--- CONTENT
+-- CONTENT FRAME
 --========================
 local content = Instance.new("Frame", main)
 content.Position = UDim2.new(0,130,0,40)
@@ -108,18 +106,14 @@ content.BackgroundTransparency = 1
 --========================
 -- ABAS
 --========================
-local tabs = {
-	"Creditos","OP","Principal","Áudio","Casa",
-	"Avatar","Ferramentas","Veículos","Diversão"
-}
-
+local tabs = {"Creditos","OP","Principal","Áudio","Casa","Avatar","Ferramentas","Veículos","Diversão"}
 local pages = {}
 
 local function createPage(name)
 	local page = Instance.new("Frame", content)
 	page.Size = UDim2.new(1,0,1,0)
-	page.Visible = false
 	page.BackgroundTransparency = 1
+	page.Visible = false
 	pages[name] = page
 	return page
 end
@@ -147,7 +141,6 @@ for _,t in ipairs(tabs) do
 		for _,p in pairs(pages) do p.Visible = false end
 		pages[t].Visible = true
 	end)
-
 	y += 35
 end
 
@@ -216,8 +209,6 @@ mini.Position = UDim2.fromScale(0.5,0.5)
 mini.AnchorPoint = Vector2.new(0.5,0.5)
 mini.BackgroundColor3 = Color3.fromRGB(0,0,0)
 mini.Visible = false
-mini.Active = true
-mini.Draggable = true
 Instance.new("UICorner", mini).CornerRadius = UDim.new(0,12)
 
 local stroke = Instance.new("UIStroke", mini)
